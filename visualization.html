@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dehydration Visualization</title>
+    <style>
+        svg { width: 300px; display: block; margin: auto; }
+        .body-part { cursor: pointer; transition: fill 0.3s; }
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: none;
+        }
+        .slider-container { text-align: center; margin-top: 20px; }
+        .legend {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .legend div {
+            display: inline-block;
+            width: 30px;
+            height: 15px;
+            margin: 0 5px;
+        }
+        .annotation {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="tooltip" class="tooltip"></div>
+    
+    <div class="slider-container">
+        <label for="interval-slider">Running Interval: <span id="interval-value">0</span></label>
+        <input type="range" id="interval-slider" min="0" max="8" step="1" value="0">
+    </div>
+
+    <svg viewBox="0 0 200 400">
+        <!-- Trunk -->
+        <rect id="trunk" class="body-part" x="80" y="100" width="40" height="80" fill="#64b4ff" />
+        
+        <!-- Arms -->
+        <rect id="right-arm" class="body-part" x="130" y="110" width="20" height="60" fill="#64b4ff" />
+        <rect id="left-arm" class="body-part" x="50" y="110" width="20" height="60" fill="#64b4ff" />
+        
+        <!-- Legs -->
+        <rect id="right-leg" class="body-part" x="100" y="190" width="20" height="80" fill="#64b4ff" />
+        <rect id="left-leg" class="body-part" x="80" y="190" width="20" height="80" fill="#64b4ff" />
+    </svg>
+    
+    <div class="legend">
+        <p>Bioimpedance Levels</p>
+        <div style="background: rgb(100, 180, 255);"></div> Low (High Water Content)
+        <div style="background: rgb(180, 255, 180);"></div> Normal
+        <div style="background: rgb(255, 180, 100);"></div> Moderate
+        <div style="background: rgb(255, 100, 100);"></div> High (Low Water Content)
+    </div>
+    
+    <div class="annotation">
+        <p><strong>Note:</strong> If bioimpedance increases, it generally means that water content in the body has decreased. Bioimpedance is a measure of the body's resistance to electrical current. Since water (along with electrolytes) is a good conductor of electricity, higher water content results in lower bioimpedance. Conversely, when the body loses water (due to dehydration, reduced intracellular fluid, etc.), resistance to electrical current increases, leading to higher bioimpedance.</p>
+    </div>
+    
+    <script>
+        const bioimpedanceData = {
+            0: { 'trunk': 400, 'right-arm': 380, 'left-arm': 390, 'right-leg': 410, 'left-leg': 420 },
+            1: { 'trunk': 420, 'right-arm': 390, 'left-arm': 400, 'right-leg': 430, 'left-leg': 440 },
+            2: { 'trunk': 440, 'right-arm': 410, 'left-arm': 420, 'right-leg': 450, 'left-leg': 460 },
+            3: { 'trunk': 460, 'right-arm': 430, 'left-arm': 440, 'right-leg': 470, 'left-leg': 480 },
+            4: { 'trunk': 480, 'right-arm': 450, 'left-arm': 460, 'right-leg': 490, 'left-leg': 500 },
+            5: { 'trunk': 500, 'right-arm': 470, 'left-arm': 480, 'right-leg': 510, 'left-leg': 520 },
+            6: { 'trunk': 520, 'right-arm': 490, 'left-arm': 500, 'right-leg': 530, 'left-leg': 540 },
+            7: { 'trunk': 540, 'right-arm': 510, 'left-arm': 520, 'right-leg': 550, 'left-leg': 560 },
+            8: { 'trunk': 560, 'right-arm': 530, 'left-arm': 540, 'right-leg': 570, 'left-leg': 580 }
+        };
+
+        const slider = document.getElementById("interval-slider");
+        const intervalValue = document.getElementById("interval-value");
+        const tooltip = document.getElementById("tooltip");
+        const bodyParts = document.querySelectorAll(".body-part");
+
+        function updateColors(interval) {
+            intervalValue.textContent = interval;
+            bodyParts.forEach(part => {
+                const value = bioimpedanceData[interval][part.id];
+                let color;
+                if (value <= 400) color = "rgb(100, 180, 255)";
+                else if (value <= 450) color = "rgb(180, 255, 180)";
+                else if (value <= 500) color = "rgb(255, 180, 100)";
+                else color = "rgb(255, 100, 100)";
+                part.setAttribute("fill", color);
+            });
+        }
+
+        bodyParts.forEach(part => {
+            part.addEventListener("mouseover", function(event) {
+                const value = bioimpedanceData[slider.value][event.target.id];
+                tooltip.textContent = `${event.target.id.replace('-', ' ')}: ${value} Ohm`;
+                tooltip.style.left = event.pageX + "px";
+                tooltip.style.top = event.pageY - 30 + "px";
+                tooltip.style.display = "block";
+            });
+            part.addEventListener("mouseout", function() {
+                tooltip.style.display = "none";
+            });
+        });
+
+        slider.addEventListener("input", function() {
+            updateColors(this.value);
+        });
+
+        updateColors(0);
+    </script>
+</body>
+</html>
