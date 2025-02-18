@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dehydration Visualization with D3.js</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>Dehydration Visualization</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="tooltip" class="tooltip"></div>
-
+    
     <div class="slider-container">
         <label for="interval-slider">Running Interval: <span id="interval-value">0</span></label>
         <input type="range" id="interval-slider" min="0" max="8" step="1" value="0">
-    </div>
+    </div> 
 
-    <svg id="visualization" width="300" height="400"></svg>
+    <svg id="visualization" viewBox="0 0 200 400"></svg>
 
     <div class="legend">
         <p>Bioimpedance Levels</p>
@@ -24,11 +24,11 @@
         <div style="background: rgb(255, 180, 100);"></div> Moderate
         <div style="background: rgb(255, 100, 100);"></div> High (Low Water Content)
     </div>
-
+    
     <div class="annotation">
-        <p><strong>Note:</strong> If bioimpedance increases, it generally means that water content in the body has decreased. Since water (with electrolytes) is a good conductor of electricity, higher water content results in lower bioimpedance. Conversely, dehydration increases resistance, leading to higher bioimpedance.</p>
+        <p><strong>Note:</strong> Higher bioimpedance values indicate lower water content.</p>
     </div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
