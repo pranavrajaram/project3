@@ -1,61 +1,119 @@
-const bioimpedanceData = {
-    0: { 'trunk': 400, 'right-arm': 380, 'left-arm': 390, 'right-leg': 410, 'left-leg': 420 },
-    1: { 'trunk': 420, 'right-arm': 390, 'left-arm': 400, 'right-leg': 430, 'left-leg': 440 },
-    2: { 'trunk': 440, 'right-arm': 410, 'left-arm': 420, 'right-leg': 450, 'left-leg': 460 },
-    3: { 'trunk': 460, 'right-arm': 430, 'left-arm': 440, 'right-leg': 470, 'left-leg': 480 },
-    4: { 'trunk': 480, 'right-arm': 450, 'left-arm': 460, 'right-leg': 490, 'left-leg': 500 },
-    5: { 'trunk': 500, 'right-arm': 470, 'left-arm': 480, 'right-leg': 510, 'left-leg': 520 },
-    6: { 'trunk': 520, 'right-arm': 490, 'left-arm': 500, 'right-leg': 530, 'left-leg': 540 },
-    7: { 'trunk': 540, 'right-arm': 510, 'left-arm': 520, 'right-leg': 550, 'left-leg': 560 },
-    8: { 'trunk': 560, 'right-arm': 530, 'left-arm': 540, 'right-leg': 570, 'left-leg': 580 }
-};
-
-const colors = value => {
-    if (value <= 400) return "rgb(100, 180, 255)";
-    if (value <= 450) return "rgb(180, 255, 180)";
-    if (value <= 500) return "rgb(255, 180, 100)";
-    return "rgb(255, 100, 100)";
-};
-
 const svg = d3.select("#visualization");
+
 const bodyParts = [
-    { id: "trunk", x: 80, y: 100, width: 40, height: 80 },
-    { id: "right-arm", x: 130, y: 110, width: 20, height: 60 },
-    { id: "left-arm", x: 50, y: 110, width: 20, height: 60 },
-    { id: "right-leg", x: 100, y: 190, width: 20, height: 80 },
-    { id: "left-leg", x: 80, y: 190, width: 20, height: 80 }
+    { id: "head", type: "ellipse", cx: 100, cy: 60, rx: 30, ry: 37.5, staticColor: "rgb(210, 180, 140)" }, // Light dark brown
+    
+    { id: "trunk", type: "rect", x: 70, y: 105, width: 60, height: 120 },
+    
+    { id: "right arm", type: "path", d: "M145,105 Q175,135 145,195" },
+    
+    { id: "left arm", type: "path", d: "M55,105 Q25,135 55,195" },
+    
+    { id: "left leg", type: "path", d: "M85,225 Q100,300 85,345" },
+    
+    { id: "right leg", type: "path", d: "M115,225 Q130,300 115,345" },
+    
+    { id: "right-foot", type: "ellipse", cx: 85, cy: 360, rx: 15, ry: 7.5, staticColor: "rgb(210, 180, 140)" },
+    
+    { id: "left-foot", type: "ellipse", cx: 115, cy: 360, rx: 15, ry: 7.5, staticColor: "rgb(210, 180, 140)"}
 ];
 
 const tooltip = d3.select("#tooltip");
 const intervalValue = d3.select("#interval-value");
 const slider = d3.select("#interval-slider");
 
-svg.selectAll(".body-part")
-    .data(bodyParts)
-    .enter().append("rect")
-    .attr("class", "body-part")
-    .attr("id", d => d.id)
-    .attr("x", d => d.x)
-    .attr("y", d => d.y)
-    .attr("width", d => d.width)
-    .attr("height", d => d.height)
-    .attr("fill", d => colors(bioimpedanceData[0][d.id]))
-    .on("mouseover", function(event, d) {
-        const value = bioimpedanceData[slider.node().value][d.id];
-        tooltip.style("display", "block")
-            .style("left", (event.pageX) + "px")
-            .style("top", (event.pageY - 30) + "px")
-            .text(`${d.id.replace('-', ' ')}: ${value} Ohm`);
-    })
-    .on("mouseout", function() { tooltip.style("display", "none"); });
+d3.csv("impedance_means.csv").then(data => {
+    const bioimpedanceData = {};
+    const minValues = {};
+    const maxValues = {};
 
-function updateColors(interval) {
-    intervalValue.text(interval);
-    svg.selectAll(".body-part")
-        .transition()
-        .duration(300)
-        .attr("fill", d => colors(bioimpedanceData[interval][d.id]));
-}
+    // Process data and determine min/max for each body part (except head)
+    data.forEach(row => {
+        const interval = +row['running interval'];
+        bioimpedanceData[interval] = {};
 
-slider.on("input", function() { updateColors(this.value); });
-updateColors(0);
+        bodyParts.forEach(part => {
+            if (!part.staticColor) { // Skip static-colored body parts (head)
+                const value = +row[`impedance ${part.id} at 1000kHz [Ohm]`];
+                bioimpedanceData[interval][part.id] = value;
+
+                if (!minValues[part.id] || value < minValues[part.id]) {
+                    minValues[part.id] = value;
+                }
+                if (!maxValues[part.id] || value > maxValues[part.id]) {
+                    maxValues[part.id] = value;
+                }
+            }
+        });
+    });
+
+    // Updated color mapping: High Impedance (Red) → Low Impedance (Blue)
+    const getColor = (value, min, max) => {
+        const normalized = (value - min) / (max - min);
+        
+        if (normalized >= 0.75) return "rgb(255, 100, 100)";  // High Impedance (Low Water Content)
+        if (normalized >= 0.50) return "rgb(255, 180, 100)";  // Moderate
+        if (normalized >= 0.25) return "rgb(180, 255, 180)";  // Normal
+        return "rgb(100, 180, 255)";                          // Low Impedance (High Water Content)
+    };
+
+    // Append body parts
+    bodyParts.forEach(part => {
+        let element;
+
+        if (part.type === "ellipse") {
+            element = svg.append("ellipse")
+                .attr("cx", part.cx)
+                .attr("cy", part.cy)
+                .attr("rx", part.rx)
+                .attr("ry", part.ry);
+        } else if (part.type === "rect") {
+            element = svg.append("rect")
+                .attr("x", part.x)
+                .attr("y", part.y)
+                .attr("width", part.width)
+                .attr("height", part.height);
+        } else if (part.type === "path") {
+            element = svg.append("path")
+                .attr("d", part.d)
+                .attr("fill", "none"); // Removed stroke to eliminate outlines
+        }
+
+        // Apply static or dynamic colors
+        if (element) {
+            element
+                .attr("id", part.id)
+                .attr("class", "body-part")
+                .attr("fill", part.staticColor ? part.staticColor : getColor(bioimpedanceData[0][part.id], minValues[part.id], maxValues[part.id]));
+
+            if (!part.staticColor) {
+                element
+                    .on("mouseover", function(event) {
+                        const value = bioimpedanceData[slider.node().value][part.id];
+                        tooltip.style("display", "block")
+                            .style("left", (event.pageX) + "px")
+                            .style("top", (event.pageY - 30) + "px")
+                            .text(`${part.id.replace('-', ' ')}: ${value} Ohm`);
+                    })
+                    .on("mouseout", function() { tooltip.style("display", "none"); });
+            }
+        }
+    });
+
+    // Function to update colors dynamically
+    function updateColors(interval) {
+        intervalValue.text(interval);
+        svg.selectAll(".body-part")
+            .transition()
+            .duration(300)
+            .attr("fill", function() {
+                const id = d3.select(this).attr("id");
+                return bioimpedanceData[interval][id] !== undefined
+                    ? getColor(bioimpedanceData[interval][id], minValues[id], maxValues[id])
+                    : d3.select(this).attr("fill"); // Keep static color for head
+            });
+    }
+
+    slider.on("input", function() { updateColors(this.value); });
+    updateColors(0);
+});
