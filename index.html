@@ -3,28 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dehydration Visualization</title>
+    <title>Where's My Water?</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="tooltip" class="tooltip"></div>
+    <h1>Where's My Water? How Different Body Parts React to Dehydration</h1>
+    <p>Drag the slider and hover over body parts to see how running on a treadmill impacts the body!</p>
     
+    <div id="tooltip" class="tooltip"></div>
+
     <div class="slider-container">
         <label for="interval-slider">Running Interval: <span id="interval-value">0</span></label>
         <input type="range" id="interval-slider" min="0" max="8" step="1" value="0">
     </div> 
 
-    <svg id="visualization" viewBox="0 0 200 400"></svg>
+    <div class="container">
+        <div class="annotation">
+            <p><b>Additional Information:</b></p>
+            <p>Participants ran on a treadmill for 120 minutes with bioimpedance data taken in 15 minute intervals.</p>
+        </div>
+
+        <svg id="visualization" viewBox="0 0 200 400"></svg>
+
+        <div class="annotation">
+            <p><b>Key Observations:</b></p>
+            <p>- <b>Limbs lose more water</b> as bioimpedance increases over time.</p>
+            <p>- <b>Trunk shows increased water content</b> (decreased impedance) due to the body's overcorrection.</p>
+            <p>- Water shifts in the body to protect vital organs.</p>
+        </div>
+    </div>
 
     <div class="legend">
-        <h3>Legend</h3>
         <div style="background: rgb(255, 100, 100);"></div> High Impedance (Low Water Content)
         <div style="background: rgb(255, 180, 100);"></div> Moderate
         <div style="background: rgb(180, 255, 180);"></div> Decreased
         <div style="background: rgb(100, 180, 255);"></div> Low Impedance (High Water Content)
     </div>
-    
+
+    <div class="footnote">
+        <p>Ring, M., Lohmueller, C., Rauh, M., Mester, J., and Eskofier, B. M. (2016), A temperature-based bioimpedance correction for water loss estimation during sports. IEEE Journal of Biomedical and Health Informatics, vol. 20, no. 6, pp. 1477–1484.</p>
+    </div>
     
     <script src="script.js"></script>
 </body>
