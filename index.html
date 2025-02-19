@@ -20,13 +20,12 @@
 
     <div class="container">
         <div class="annotation">
-            <p><b>Visualization & Experiment Context:</b></p>
+            <p><b>Visualization Context:</b></p>
             <ul>
-                <li>Interact with the visualization by <b>hovering over different body parts</b> to see the Ohm level. The color changes dynamically based on hydration levels.</li>
-                <li><b>What is Ohm?</b> Ohm (Ω) is a unit of electrical resistance. In bioimpedance measurements, higher Ohm values indicate greater resistance, meaning lower water content, while lower Ohm values suggest higher hydration levels.</li>
                 <li>Participants ran on a treadmill for <b>120 minutes</b> without fluid intake, divided into <b>8 running intervals</b> (15 min each).</li>
-                <li>After each running interval, there was an <b>8-minute rest</b> where bioimpedance, temperature, sweat, and saliva samples were collected.</li>
-                <li><b>Bioimpedance data was collected at different body parts, with higher impedance indicating lower water content.</b></li>
+                <li>Data was aggregated across each time interval, and the averages for each body part are shown.</li>
+                <li><b>What is Ohm?</b> Ohm (Ω) is a unit of electrical resistance. In bioimpedance measurements, higher Ohm values indicate greater resistance, meaning lower water content, while lower Ohm values suggest higher hydration levels.</li>
+
             </ul>
         </div>
 
@@ -36,10 +35,9 @@
         <div class="annotation">
             <p><b>Key Observations:</b></p>
             <ul>
-                <li>📉 <b>Right Arm Shows the Most Water Loss:</b> Impedance decreased by <b>~3.4%</b>, indicating high dehydration.</li>
-                <li>🛡️ <b>The Trunk Shows the Least Water Loss:</b> Impedance <b>slightly increased (~1.2%)</b>, suggesting water redistribution.</li>
-                <li>💧 <b>Limbs Lose More Water Than the Core:</b> Peripheral areas (arms and legs) <b>experienced more dehydration</b> than the trunk.</li>
-                <li>🔄 <b>Water Shifts to the Trunk:</b> The body appears to <b>retain water in the core</b> to protect vital organs.</li>
+                <li>📈 <b>Right Arm Shows the Most Water Gain:</b> Counterintuitively, the impedance decreased by <b>~3.4%</b>, indicating high re-hydration to the arms while running.</li>
+                <li>🛡️ <b>The Trunk Gets Protected:</b> The impedance increased rapidly and then stabilized, showing how the body might prioritize hydrating vital organs in the chest. </li>
+                <li>💧 <b>Legs Are Variable:</b> The values went from high to low to moderate, highlighting how the body may have initially helped re-hydrate the legs, but they got fatigued once again over time.</li>
             </ul>
         </div>
     </div>
@@ -53,7 +51,8 @@
     
 
     <div class="footnote">
-        <p>Ring, M., Lohmueller, C., Rauh, M., Mester, J., and Eskofier, B. M. (2016), A temperature-based bioimpedance correction for water loss estimation during sports. IEEE Journal of Biomedical and Health Informatics, vol. 20, no. 6, pp. 1477–1484.</p>
+        <p>For further explanation of the visualization, please refer to the <a href="https://docs.google.com/document/d/1r8L45_V8O02NG-kweyVKXfMLwZqHHntmVIfrQs8uu10/edit?usp=sharing" target="_blank">detailed write-up</a>.</p>
+
     </div>
     
     <script src="script.js"></script>

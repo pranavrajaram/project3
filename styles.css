@@ -41,7 +41,7 @@ p {
 }
 
 .annotation {
-    font-size: 12px;
+    font-size: 13.5px;
     color: #555;
     background: white;
     padding: 10px;
@@ -119,7 +119,7 @@ p {
 .footnote {
     margin-top: 30px;
     text-align: center;
-    font-size: 8px;
+    font-size: 7px;
     color: #555;
 }
 
