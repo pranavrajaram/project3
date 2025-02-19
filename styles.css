@@ -122,3 +122,13 @@ p {
     font-size: 8px;
     color: #555;
 }
+
+.annotation ul {
+    padding-left: 20px;  /* Ensures all bullets are properly aligned */
+    list-style-position: outside; /* Keeps bullet points outside the text */
+}
+
+.annotation ul li {
+    margin-bottom: 10px;  /* Adds spacing between bullet points */
+    display: list-item;  /* Ensures items follow proper bullet list formatting */
+}

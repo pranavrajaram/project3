@@ -20,17 +20,26 @@
 
     <div class="container">
         <div class="annotation">
-            <p><b>Additional Information:</b></p>
-            <p>Participants ran on a treadmill for 120 minutes with bioimpedance data taken in 15 minute intervals.</p>
+            <p><b>Experiment Context:</b></p>
+            <p>This visualization represents <b>how total body water (TBW) loss occurs over time</b> during exercise.</p>
+            <ul>
+                <li>Participants ran on a treadmill for <b>120 minutes</b> without fluid intake, divided into <b>8 running intervals</b> (15 min each).</li>
+                <li>After each running interval, there was an <b>8-minute rest</b> where bioimpedance, temperature, sweat, and saliva samples were collected.</li>
+                <li><b>TBW loss was estimated</b> using weight changes measured by a high-precision scale (±5g accuracy).</li>
+                <li><b>Bioimpedance data</b> was collected at different body parts, with <b>higher impedance indicating lower water content</b>.</li>
+            </ul>
         </div>
 
         <svg id="visualization" viewBox="0 0 200 400"></svg>
 
         <div class="annotation">
             <p><b>Key Observations:</b></p>
-            <p>- <b>Limbs lose more water</b> as bioimpedance increases over time.</p>
-            <p>- <b>Trunk shows increased water content</b> (decreased impedance) due to the body's overcorrection.</p>
-            <p>- Water shifts in the body to protect vital organs.</p>
+            <ul>
+                <li>📉 <b>Right Arm Shows the Most Water Loss:</b> Impedance decreased by <b>~3.4%</b>, indicating high dehydration.</li>
+                <li>🛡️ <b>The Trunk Shows the Least Water Loss:</b> Impedance <b>slightly increased (~1.2%)</b>, suggesting water redistribution.</li>
+                <li>💧 <b>Limbs Lose More Water Than the Core:</b> Peripheral areas (arms and legs) <b>experienced more dehydration</b> than the trunk.</li>
+                <li>🔄 <b>Water Shifts to the Trunk:</b> The body appears to <b>retain water in the core</b> to protect vital organs.</li>
+            </ul>
         </div>
     </div>
 
