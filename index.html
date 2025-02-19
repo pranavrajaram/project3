@@ -20,15 +20,16 @@
 
     <div class="container">
         <div class="annotation">
-            <p><b>Experiment Context:</b></p>
-            <p>This visualization represents <b>how total body water (TBW) loss occurs over time</b> during exercise.</p>
+            <p><b>Visualization & Experiment Context:</b></p>
             <ul>
+                <li>Interact with the visualization by <b>hovering over different body parts</b> to see the Ohm level. The color changes dynamically based on hydration levels.</li>
+                <li><b>What is Ohm?</b> Ohm (Ω) is a unit of electrical resistance. In bioimpedance measurements, higher Ohm values indicate greater resistance, meaning lower water content, while lower Ohm values suggest higher hydration levels.</li>
                 <li>Participants ran on a treadmill for <b>120 minutes</b> without fluid intake, divided into <b>8 running intervals</b> (15 min each).</li>
                 <li>After each running interval, there was an <b>8-minute rest</b> where bioimpedance, temperature, sweat, and saliva samples were collected.</li>
-                <li><b>TBW loss was estimated</b> using weight changes measured by a high-precision scale (±5g accuracy).</li>
-                <li><b>Bioimpedance data</b> was collected at different body parts, with <b>higher impedance indicating lower water content</b>.</li>
+                <li><b>Bioimpedance data was collected at different body parts, with higher impedance indicating lower water content.</b></li>
             </ul>
         </div>
+
 
         <svg id="visualization" viewBox="0 0 200 400"></svg>
 
@@ -44,11 +45,12 @@
     </div>
 
     <div class="legend">
-        <div style="background: rgb(255, 100, 100);"></div> High Impedance (Low Water Content)
-        <div style="background: rgb(255, 180, 100);"></div> Moderate
-        <div style="background: rgb(180, 255, 180);"></div> Decreased
-        <div style="background: rgb(100, 180, 255);"></div> Low Impedance (High Water Content)
+        <div style="background: #FF4C4C;"></div> High Impedance (Low Water Content)
+        <div style="background: #FFCC4C;"></div> Moderately High Impedance
+        <div style="background: #87CEEB;"></div> Moderately Low Impedance
+        <div style="background: #00008B; color: white;"></div> Low Impedance (High Water Content)
     </div>
+    
 
     <div class="footnote">
         <p>Ring, M., Lohmueller, C., Rauh, M., Mester, J., and Eskofier, B. M. (2016), A temperature-based bioimpedance correction for water loss estimation during sports. IEEE Journal of Biomedical and Health Informatics, vol. 20, no. 6, pp. 1477–1484.</p>

@@ -50,12 +50,13 @@ d3.csv("impedance_means.csv").then(data => {
     // Updated color mapping: High Impedance (Red) → Low Impedance (Blue)
     const getColor = (value, min, max) => {
         const normalized = (value - min) / (max - min);
-        
-        if (normalized >= 0.75) return "rgb(255, 100, 100)";  // High Impedance (Low Water Content)
-        if (normalized >= 0.50) return "rgb(255, 180, 100)";  // Moderate
-        if (normalized >= 0.25) return "rgb(180, 255, 180)";  // Normal
-        return "rgb(100, 180, 255)";                          // Low Impedance (High Water Content)
+    
+        if (normalized >= 0.75) return "#FF4C4C";  // 🔴 High Impedance (Low Water Content)
+        if (normalized >= 0.50) return "#FFCC4C";  // 🟡 Moderate Impedance (Moderate Water Loss)
+        if (normalized >= 0.25) return "#87CEEB";  // 🌊 Light Sky Blue (Moderate Hydration)
+        return "#00008B";                          // 🔵 Dark Blue (High Water Content)
     };
+    
 
     // Append body parts
     bodyParts.forEach(part => {
@@ -85,6 +86,7 @@ d3.csv("impedance_means.csv").then(data => {
                 .attr("id", part.id)
                 .attr("class", "body-part")
                 .attr("fill", part.staticColor ? part.staticColor : getColor(bioimpedanceData[0][part.id], minValues[part.id], maxValues[part.id]));
+
 
             if (!part.staticColor) {
                 element
